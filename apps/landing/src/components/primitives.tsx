@@ -1,6 +1,6 @@
 import type { CSSProperties, ElementType, ReactNode } from "react";
 import { useInView } from "../lib/hooks";
-import "./primitives.css";
+import { cx } from "../lib/ui";
 
 /* ------------------------------------------------------------------
    ByteMark — eight bits, one of them on. The whole brand in 8 squares.
@@ -8,45 +8,65 @@ import "./primitives.css";
    only the last cell.
    ------------------------------------------------------------------ */
 
-type ByteMarkProps = {
-  value?: number;
-  /** Cell edge in px. */
-  cell?: number;
-  /** Gap between cells in px. */
-  gap?: number;
-  /** Render unlit cells faintly instead of solid. */
-  dim?: boolean;
-  /** Lay the bits out as one row of eight instead of 4 × 2. */
-  row?: boolean;
-  className?: string;
-};
-
-export function ByteMark({ value = 1, cell = 5, gap = 2, dim = false, row = false, className }: ByteMarkProps) {
+export function ByteMark({ value = 1, cell = 5, gap = 2 }: { value?: number; cell?: number; gap?: number }) {
   const bits = Array.from({ length: 8 }, (_, i) => ((value >> (7 - i)) & 1) === 1);
-  const style = {
-    "--cell": `${cell}px`,
-    "--gap": `${gap}px`,
-    "--cols": row ? 8 : 4,
-  } as CSSProperties;
-
   return (
     <span
-      className={["bytemark", dim && "bytemark--dim", className].filter(Boolean).join(" ")}
-      style={style}
+      className="inline-grid shrink-0 grid-cols-[repeat(4,var(--cell))] gap-(--gap) align-middle"
+      style={{ "--cell": `${cell}px`, "--gap": `${gap}px` } as CSSProperties}
       aria-hidden="true"
     >
       {bits.map((on, i) => (
-        <i key={i} data-on={on || undefined} />
+        <i key={i} className={cx("size-(--cell) rounded-[calc(var(--cell)*0.22)]", on ? "bg-green" : "bg-current")} />
       ))}
     </span>
   );
 }
 
-export function Logo({ className }: { className?: string }) {
+export function Logo() {
   return (
-    <span className={["logo", className].filter(Boolean).join(" ")}>
+    <span className="inline-flex items-center gap-2.5">
       <ByteMark />
-      <span className="logo__word">OneByte</span>
+      <span className="font-display text-[21px] leading-none font-bold tracking-[-0.025em]">OneByte</span>
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------
+   ByteMeter — eight segments, like the mark. Fills left to right,
+   the last lit segment partially. The fill colour comes from `--fill`,
+   so a parent can re-brand it.
+   ------------------------------------------------------------------ */
+
+const meterTone = {
+  green: "[--fill:var(--color-green-deep)]",
+  amber: "[--fill:var(--color-amber)]",
+  ink: "[--fill:var(--color-ink)]",
+  inherit: "",
+};
+
+export function ByteMeter({
+  ratio,
+  tone = "green",
+  className,
+}: {
+  ratio: number;
+  tone?: keyof typeof meterTone;
+  className?: string;
+}) {
+  return (
+    <span className={cx("grid h-1.5 w-full grid-cols-8 gap-0.5", meterTone[tone], className)} aria-hidden="true">
+      {Array.from({ length: 8 }, (_, i) => {
+        const fill = Math.max(0, Math.min(1, ratio * 8 - i));
+        return (
+          <i key={i} className="relative overflow-hidden rounded-[1.5px] bg-ink/9">
+            <b
+              className="absolute inset-0 origin-left bg-(--fill) transition-[transform,background-color] duration-[600ms] ease-out"
+              style={{ transform: `scaleX(${fill})` }}
+            />
+          </i>
+        );
+      })}
     </span>
   );
 }
@@ -69,8 +89,12 @@ export function Reveal({ children, as: Tag = "div", delay = 0, className, style,
   return (
     <Tag
       ref={ref}
-      className={["reveal", inView && "is-in", className].filter(Boolean).join(" ")}
-      style={{ ...style, "--d": `${delay}ms` } as CSSProperties}
+      className={cx(
+        "transition-[opacity,translate] duration-[900ms] ease-out motion-reduce:translate-none motion-reduce:opacity-100 motion-reduce:transition-none",
+        inView ? "opacity-100" : "translate-y-5 opacity-0",
+        className,
+      )}
+      style={{ ...style, transitionDelay: `${delay}ms` }}
       {...rest}
     >
       {children}

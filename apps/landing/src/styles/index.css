@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+/* Geist ships without the naira sign. Borrow just that glyph from Inter
+   so ₦ always renders in a matching grotesque instead of a system font. */
+@font-face {
+  font-family: "Naira";
+  src: url("@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+20A6;
+}
+
+/* ------------------------------------------------------------------
+   Theme. Everything visual is a Tailwind token or utility; there are
+   no hand-written component styles. The palette is deliberately small
+   and flat: white, ink, greys and one green.
+   ------------------------------------------------------------------ */
+
+@theme {
+  --color-*: initial;
+}
+
+@theme static {
+  /* Type */
+  --font-sans: "Naira", "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Naira", "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-display: "Bricolage Grotesque Variable", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Surfaces */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-paper-2: #f4f4f2;
+  --color-paper-3: #e8e8e5;
+
+  /* Ink */
+  --color-ink: #0a0b0a;
+  --color-ink-2: #353836;
+  --color-ink-3: #626663;
+  --color-ink-4: #969a97;
+  --color-line: rgb(11 12 11 / 0.08);
+  --color-line-2: rgb(11 12 11 / 0.14);
+
+  /* The lit bit */
+  --color-green: #17db70;
+  --color-green-deep: #0a8f47;
+  --color-green-ink: #06713a;
+  --color-green-wash: #dcf7e5;
+  --color-forest: #0b3a2a;
+
+  /* Status */
+  --color-amber: #b86e00;
+
+  /* Night */
+  --color-night: #0a0b0a;
+  --color-night-2: #151716;
+  --color-night-3: #1f2220;
+  --color-night-line: rgb(255 255 255 / 0.09);
+  --color-night-line-2: rgb(255 255 255 / 0.16);
+  --color-on-night: #ffffff;
+  --color-on-night-2: #b0b4b1;
+  --color-on-night-3: #7e8380;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgb(11 12 11 / 0.05);
+  --shadow-md: 0 1px 2px rgb(11 12 11 / 0.04), 0 8px 24px -8px rgb(11 12 11 / 0.1);
+  --shadow-lg: 0 1px 2px rgb(11 12 11 / 0.04), 0 12px 32px -12px rgb(11 12 11 / 0.14),
+    0 40px 80px -32px rgb(11 12 11 / 0.22);
+
+  /* Motion. `ease-in-out` keeps Tailwind's default curve. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Animations: `animate-<name>`. Staggered ones take their delay from an inline style. */
+  --animate-line-in: line-in 0.9s var(--ease-out) both;
+  --animate-sticker-in: sticker-in 0.8s var(--ease-out) 0.5s both;
+  --animate-word-in: word-in 0.6s var(--ease-out) both;
+  --animate-word-out: word-out 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-hero-lede: rise-in 1s var(--ease-out) 0.5s both;
+  --animate-hero-form: rise-in 1s var(--ease-out) 0.62s both;
+  --animate-hero-stage: rise-in 1.2s var(--ease-out) 0.78s both;
+  --animate-moment-in: moment-in 0.9s var(--ease-out) 1.9s both;
+  --animate-sheet-in: sheet-in 0.5s var(--ease-out) both;
+  --animate-sheet-in-late: sheet-in 0.5s var(--ease-out) 0.24s both;
+  --animate-waitlist-in: waitlist-in 0.5s var(--ease-out);
+  --animate-live-pulse: live-pulse 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  --animate-bar-grow: bar-grow 0.9s var(--ease-out) both;
+  --animate-tip-in: tip-in 0.16s var(--ease-out);
+  --animate-toast-in: toast-in 0.8s var(--ease-out) 2.3s both;
+  --animate-toast-tick: toast-tick 0.5s var(--ease-out);
+  --animate-caret: caret 1.1s steps(1) infinite;
+  --animate-activate: activate 0.5s var(--ease-out) both;
+  --animate-how-progress: how-progress 5.2s linear both;
+  --animate-code-in: code-in 0.4s var(--ease-out) both;
+
+  @keyframes line-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.45em);
+    }
+  }
+  @keyframes sticker-in {
+    from {
+      transform: rotate(-9deg) scale(0.7);
+    }
+  }
+  @keyframes word-in {
+    from {
+      transform: translateY(105%);
+    }
+  }
+  @keyframes word-out {
+    to {
+      transform: translateY(-105%);
+      opacity: 0;
+    }
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+  }
+  @keyframes moment-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px) scale(0.92);
+    }
+  }
+  @keyframes sheet-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  @keyframes waitlist-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  @keyframes live-pulse {
+    60%,
+    100% {
+      box-shadow: 0 0 0 6px rgb(23 219 112 / 0);
+    }
+  }
+  @keyframes bar-grow {
+    from {
+      transform: scaleY(0);
+    }
+  }
+  @keyframes tip-in {
+    from {
+      opacity: 0;
+      translate: 0 3px;
+    }
+  }
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(-12px) scale(0.94);
+    }
+  }
+  @keyframes toast-tick {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes activate {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+  }
+  @keyframes how-progress {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes code-in {
+    from {
+      opacity: 0;
+      transform: translateX(-4px);
+    }
+  }
+}
+
+/* `night:` styles anything inside a dark section (an element with the `night` class). */
+@custom-variant night (&:where(.night, .night *));
+
+/* Global element defaults that have no per-element utility. Page-level styles
+   (font, colours, selection, smooth scrolling) are classes on <html> and <body> in index.html. */
+@layer base {
+  button {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  .night :focus-visible,
+  [data-theme="dark"] :focus-visible {
+    outline-color: var(--color-green);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}
