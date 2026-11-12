@@ -1,6 +1,7 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
 import { cx, h2, section, sectionHead, shell, tagGreen } from "../lib/ui";
 import { ByteMeter, Icon, Reveal, type IconName } from "./primitives";
+import { Avatar } from "./Avatar";
 
 /* ------------------------------------------------------------------
    Product card. Each one is a flat field of colour with copy on top
@@ -59,10 +60,10 @@ const art = "relative mt-8 flex flex-1 text-[13px] leading-[1.35] tracking-[-0.0
 /* ---------------- Illustrations ---------------- */
 
 const team = [
-  { initials: "AO", name: "Adaeze Okafor", used: 14.2, limit: 20 },
-  { initials: "TB", name: "Tunde Bakare", used: 9.6, limit: 10 },
-  { initials: "IN", name: "Ifeoma Nwosu", used: 6.1, limit: 15 },
-  { initials: "ZY", name: "Zainab Yusuf", used: 3.4, limit: 10 },
+  { name: "Adaeze Okafor", used: 14.2, limit: 20 },
+  { name: "Tunde Bakare", used: 9.6, limit: 10 },
+  { name: "Ifeoma Nwosu", used: 6.1, limit: 15 },
+  { name: "Zainab Yusuf", used: 3.4, limit: 10 },
 ];
 
 function TeamsArt() {
@@ -85,9 +86,7 @@ function TeamsArt() {
               key={person.name}
               className="grid h-[50px] grid-cols-[28px_minmax(0,1.1fr)_minmax(0,1fr)_88px] items-center gap-3 border-t border-line max-[640px]:grid-cols-[28px_minmax(0,1fr)_84px]"
             >
-              <i className="grid size-7 place-items-center rounded-full bg-paper-3 text-[10px] font-semibold text-ink-2 not-italic">
-                {person.initials}
-              </i>
+              <Avatar name={person.name} className="size-7" />
               <span className="truncate font-[520]">{person.name}</span>
               <ByteMeter
                 ratio={person.used / person.limit}

@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from "react";
 import { useInView, useInterval, usePrefersReducedMotion } from "../lib/hooks";
 import { cx, eyebrow, h2, section, sectionHead, shell, tag, tagGreen } from "../lib/ui";
-import { Icon, Reveal } from "./primitives";
+import { Icon, Network, Reveal } from "./primitives";
+import { Avatar } from "./Avatar";
 
 /** How long each step shows before advancing. The progress bar's `5.2s` below must match. */
 const STEP_MS = 5200;
@@ -30,7 +31,6 @@ const steps = [
 const hairlineRing = "inset-ring inset-ring-line-2";
 const fieldLabel = "text-[12.5px] text-ink-3";
 const tile = "grid gap-0.5 rounded-xl bg-paper-2";
-const avatar = "grid size-[30px] place-items-center rounded-full bg-paper-3 text-[10.5px] font-semibold text-ink-2 not-italic";
 
 function Scene({ title, badge, children }: { title: string; badge: ReactNode; children: ReactNode }) {
   return (
@@ -125,9 +125,9 @@ function SceneWallet() {
 }
 
 const limitRows = [
-  { initials: "AO", name: "Adaeze Okafor", number: "0805 ••• 4412", limit: 20 },
-  { initials: "TB", name: "Tunde Bakare", number: "0807 ••• 9038", limit: 10 },
-  { initials: "IN", name: "Ifeoma Nwosu", number: "0705 ••• 2271", limit: 15 },
+  { name: "Adaeze Okafor", number: "0803 ••• 4412", limit: 20 },
+  { name: "Tunde Bakare", number: "0807 ••• 9038", limit: 10 },
+  { name: "Ifeoma Nwosu", number: "0706 ••• 2271", limit: 15 },
 ];
 
 function SceneLimits() {
@@ -145,7 +145,7 @@ function SceneLimits() {
       <ul className="grid">
         {limitRows.map((row) => (
           <li key={row.name} className="grid grid-cols-[30px_minmax(0,1fr)_auto] items-center gap-2.5 border-t border-line py-2.5">
-            <i className={avatar}>{row.initials}</i>
+            <Avatar name={row.name} className="size-[30px]" />
             <span className="grid min-w-0">
               <strong className="font-[520]">{row.name}</strong>
               <em className="font-mono text-[11.5px] text-ink-3 tabular-nums">{row.number}</em>
@@ -175,10 +175,10 @@ function SceneLimits() {
 }
 
 const activations = [
-  { number: "0805 ••• 4412", name: "Adaeze" },
-  { number: "0807 ••• 9038", name: "Tunde" },
-  { number: "0705 ••• 2271", name: "Ifeoma" },
-  { number: "0815 ••• 6650", name: "Zainab" },
+  { number: "0803 ••• 4412", name: "Adaeze", network: "MTN" as const },
+  { number: "0807 ••• 9038", name: "Tunde", network: "Glo" as const },
+  { number: "0706 ••• 2271", name: "Ifeoma", network: "MTN" as const },
+  { number: "0815 ••• 6650", name: "Zainab", network: "Glo" as const },
 ];
 
 function SceneLive() {
@@ -186,9 +186,9 @@ function SceneLive() {
     <Scene
       title="Activation"
       badge={
-        <span className={tagGreen}>
-          <i className="size-1.5 rounded-full bg-green-deep" />
-          Glo
+        <span className="flex gap-1">
+          <Network name="MTN" size="sm" />
+          <Network name="Glo" size="sm" />
         </span>
       }
     >
@@ -199,7 +199,10 @@ function SceneLive() {
             className="grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_auto] items-center gap-2.5 border-t border-line py-[11px]"
           >
             <span className="font-mono text-[12.5px] tabular-nums">{row.number}</span>
-            <span className="text-ink-3">{row.name}</span>
+            <span className="text-ink-3">
+              <span className="mr-1.5">{row.name}</span>
+              <Network name={row.network} />
+            </span>
             {/* Chips pop in one by one each time this scene becomes the active one. */}
             <em
               className="inline-flex h-6 items-center gap-1 rounded-full bg-green-wash px-2.5 text-[12px] font-[540] text-green-ink group-data-[active]/scene:animate-activate"

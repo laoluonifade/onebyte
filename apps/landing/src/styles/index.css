@@ -48,6 +48,10 @@
   --color-green-wash: #dcf7e5;
   --color-forest: #0b3a2a;
 
+  /* Network brand colours (MTN yellow, Glo green), used only to mark which network a number is on. */
+  --color-mtn: #ffcc00;
+  --color-glo: #50b848;
+
   /* Status */
   --color-amber: #b86e00;
 
@@ -91,6 +95,7 @@
   --animate-activate: activate 0.5s var(--ease-out) both;
   --animate-how-progress: how-progress 5.2s linear both;
   --animate-code-in: code-in 0.4s var(--ease-out) both;
+  --animate-bit-drop: bit-drop 0.55s var(--ease-out) both;
 
   @keyframes line-in {
     from {
@@ -183,6 +188,16 @@
       transform: scaleX(0);
     }
   }
+  @keyframes bit-drop {
+    0% {
+      opacity: 0;
+      transform: translateY(-28px) scale(0.4);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(3px) scale(1.08);
+    }
+  }
   @keyframes code-in {
     from {
       opacity: 0;
@@ -234,6 +249,11 @@
     }
   }
 }
+
+/* While the logo intro plays (see Intro.tsx), the page waits: its own animations hold
+   at their first frame and pick up where they left off once the curtain lifts. */
+@custom-variant intro (&:where([data-intro] *));
+@custom-variant intro-mark (&:where([data-intro-mark] *));
 
 /* `night:` styles anything inside a dark section (an element with the `night` class). */
 @custom-variant night (&:where(.night, .night *));

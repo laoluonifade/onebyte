@@ -173,10 +173,10 @@ export function Hero() {
               aria-hidden="true"
             >
               <div className="mb-2.5 flex items-center gap-2 text-[12.5px] font-[520] text-ink-2 max-[760px]:mb-1.5 max-[760px]:gap-1.5 max-[760px]:text-[11px]">
-                <span className="grid size-[22px] place-items-center rounded-md bg-ink text-green max-[760px]:size-[18px] max-[760px]:rounded-[5px]">
+                <span className="grid size-[22px] place-items-center rounded-md bg-mtn text-ink max-[760px]:size-[18px] max-[760px]:rounded-[5px]">
                   <Icon name="signal" size={12} />
                 </span>
-                <span>Glo</span>
+                <span>MTN</span>
                 <em className="ml-auto font-normal text-ink-4 not-italic">now</em>
               </div>
               <strong className="block text-[17px] leading-[1.2] font-semibold tracking-[-0.03em] text-ink max-[760px]:text-[14.5px]">

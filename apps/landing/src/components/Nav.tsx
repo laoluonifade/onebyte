@@ -54,7 +54,7 @@ export function Nav() {
   return (
     <header
       className={cx(
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color] duration-300 ease-in-out",
+        "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color,opacity] duration-300 ease-in-out intro:opacity-0",
         dark
           ? "bg-night/80 text-on-night shadow-[0_1px_0_var(--color-night-line)] backdrop-blur-[20px] backdrop-saturate-[1.8]"
           : "text-ink",

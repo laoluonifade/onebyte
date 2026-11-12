@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "Which networks do you support?",
-    a: "We're launching on Glo. More Nigerian networks will follow as each integration goes live, and they'll all be managed from the same dashboard.",
+    a: "MTN and Glo, both managed from the same dashboard and drawing on the same wallet. More networks will follow as each integration goes live.",
   },
   {
     q: "Do my people need a new SIM or an app?",

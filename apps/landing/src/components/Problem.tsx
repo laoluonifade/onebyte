@@ -2,23 +2,24 @@ import { useState } from "react";
 import { useInView } from "../lib/hooks";
 import { cx, h2Base, lede, sectionHead, seg, segButton, shell } from "../lib/ui";
 import { Reveal } from "./primitives";
+import { Avatar } from "./Avatar";
 
 /* A Monday morning most Nigerian teams will recognise. */
 const thread = [
   {
-    initials: "TB",
+    person: "Tunde Bakare",
     name: "Tunde",
     time: "9:58",
     text: "My data just finished. Give me ten minutes, I need to buy a bundle.",
   },
   {
-    initials: "IN",
+    person: "Ifeoma Nwosu",
     name: "Ifeoma",
     time: "9:59",
     text: "Mine expired on Friday. I hadn't even used half of it.",
   },
   {
-    initials: "ZY",
+    person: "Zainab Yusuf",
     name: "Zainab",
     time: "10:02",
     text: "Okay. Starting without you both.",
@@ -110,9 +111,7 @@ export function Problem() {
                   style={arriveDelay(i)}
                   key={message.name}
                 >
-                  <i className="grid size-9 place-items-center rounded-full bg-green text-[12px] font-semibold text-ink not-italic">
-                    {message.initials}
-                  </i>
+                  <Avatar name={message.person} className="size-9 ring-2 ring-green" />
                   <div className="rounded-[20px_20px_20px_6px] bg-white px-4 pt-3 pb-3.5 text-ink">
                     <span className="flex items-baseline gap-2 text-[13.5px] font-semibold tracking-[-0.01em]">
                       {message.name} <em className="font-normal text-ink-4 not-italic tabular-nums">{message.time}</em>

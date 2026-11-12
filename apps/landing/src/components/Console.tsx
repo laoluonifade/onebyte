@@ -2,7 +2,8 @@ import { useState, type ReactNode } from "react";
 import { gb, int, naira, nairaExact } from "../lib/format";
 import { useInView, useInterval, usePrefersReducedMotion } from "../lib/hooks";
 import { cx } from "../lib/ui";
-import { ByteMeter, Icon, type IconName } from "./primitives";
+import { ByteMeter, Icon, Network, type IconName, type NetworkName } from "./primitives";
+import { Avatar } from "./Avatar";
 
 /* ------------------------------------------------------------------
    Console — a working miniature of the business dashboard. All figures
@@ -36,15 +37,18 @@ type Person = {
   number: string;
   used: number | null;
   limit: number;
+  network: NetworkName;
   status: "active" | "near" | "pending";
 };
 
 const people: Person[] = [
-  { name: "Adaeze Okafor", team: "Engineering", number: "0805 ••• 4412", used: 14.2, limit: 20, status: "active" },
-  { name: "Tunde Bakare", team: "Sales", number: "0807 ••• 9038", used: 9.6, limit: 10, status: "near" },
-  { name: "Ifeoma Nwosu", team: "Design", number: "0705 ••• 2271", used: 6.1, limit: 15, status: "active" },
-  { name: "Zainab Yusuf", team: "Support", number: "0815 ••• 6650", used: 3.4, limit: 10, status: "active" },
-  { name: "Emeka Obi", team: "Operations", number: "0905 ••• 1187", used: null, limit: 10, status: "pending" },
+  { name: "Ayomide Aluko", team: "Engineering", number: "0816 ••• 2390", used: 11.8, limit: 20, network: "MTN", status: "active" },
+  { name: "Laolu Onifade", team: "Product", number: "0805 ••• 7714", used: 8.3, limit: 15, network: "Glo", status: "active" },
+  { name: "Adaeze Okafor", team: "Engineering", number: "0803 ••• 4412", used: 14.2, limit: 20, network: "MTN", status: "active" },
+  { name: "Tunde Bakare", team: "Sales", number: "0807 ••• 9038", used: 9.6, limit: 10, network: "Glo", status: "near" },
+  { name: "Ifeoma Nwosu", team: "Design", number: "0706 ••• 2271", used: 6.1, limit: 15, network: "MTN", status: "active" },
+  { name: "Zainab Yusuf", team: "Support", number: "0815 ••• 6650", used: 3.4, limit: 10, network: "Glo", status: "active" },
+  { name: "Emeka Obi", team: "Operations", number: "0903 ••• 1187", used: null, limit: 10, network: "MTN", status: "pending" },
 ];
 
 const statusLabel: Record<Person["status"], string> = {
@@ -52,12 +56,6 @@ const statusLabel: Record<Person["status"], string> = {
   near: "Near limit",
   pending: "Activating",
 };
-
-const initials = (name: string) =>
-  name
-    .split(" ")
-    .map((part) => part[0])
-    .join("");
 
 /* ---------------- Class recipes local to the dashboard ---------------- */
 
@@ -146,13 +144,16 @@ export function Console() {
 
         <div className="mt-auto grid gap-[3px] rounded-[10px] bg-white p-3 text-[11.5px] text-ink-3 ring-1 ring-ink/7">
           <div className="mb-1 flex items-center justify-between">
-            <span>Shared pool</span>
+            <span>Shared pools</span>
             <span className="inline-flex items-center gap-[5px] font-[520] text-green-ink">
               <i className="size-1.5 animate-live-pulse rounded-full bg-green shadow-[0_0_0_0_rgb(23_219_112/0.5)]" />
               Live
             </span>
           </div>
-          <strong className="text-[13px] font-[560] tracking-[-0.02em] text-ink">Glo Nigeria</strong>
+          <span className="mt-0.5 mb-1 flex gap-1">
+            <Network name="MTN" />
+            <Network name="Glo" />
+          </span>
           <span>248 numbers connected</span>
         </div>
       </aside>
@@ -308,9 +309,7 @@ export function Console() {
               return (
                 <div className={cx(row, "h-11 border-t", hairline)} role="row" key={person.name}>
                   <span role="cell" className="flex items-center gap-2.5">
-                    <i className="grid size-[26px] shrink-0 place-items-center rounded-full bg-paper-3 text-[10px] font-semibold tracking-[0.01em] text-ink-2 not-italic">
-                      {initials(person.name)}
-                    </i>
+                    <Avatar name={person.name} className="size-[26px]" />
                     <span className="grid min-w-0">
                       <strong className="truncate font-[520]">{person.name}</strong>
                       <em className="text-[11px] text-ink-3">{person.team}</em>
@@ -320,9 +319,7 @@ export function Console() {
                     {person.number}
                   </span>
                   <span role="cell">
-                    <span className="inline-flex h-5 items-center rounded-md px-[7px] text-[11px] font-[520] inset-ring inset-ring-line-2">
-                      Glo
-                    </span>
+                    <Network name={person.network} />
                   </span>
                   <span role="cell" className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
                     <ByteMeter ratio={ratio} tone={person.status === "near" ? "amber" : "green"} />

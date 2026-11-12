@@ -8,11 +8,22 @@ import { cx } from "../lib/ui";
    only the last cell.
    ------------------------------------------------------------------ */
 
-export function ByteMark({ value = 1, cell = 5, gap = 2 }: { value?: number; cell?: number; gap?: number }) {
+export function ByteMark({
+  value = 1,
+  cell = 5,
+  gap = 2,
+  className,
+}: {
+  value?: number;
+  cell?: number;
+  gap?: number;
+  className?: string;
+}) {
   const bits = Array.from({ length: 8 }, (_, i) => ((value >> (7 - i)) & 1) === 1);
   return (
     <span
-      className="inline-grid shrink-0 grid-cols-[repeat(4,var(--cell))] gap-(--gap) align-middle"
+      className={cx("inline-grid shrink-0 grid-cols-[repeat(4,var(--cell))] gap-(--gap) align-middle", className)}
+      data-bytemark
       style={{ "--cell": `${cell}px`, "--gap": `${gap}px` } as CSSProperties}
       aria-hidden="true"
     >
@@ -26,8 +37,34 @@ export function ByteMark({ value = 1, cell = 5, gap = 2 }: { value?: number; cel
 export function Logo() {
   return (
     <span className="inline-flex items-center gap-2.5">
-      <ByteMark />
+      {/* Hidden while the intro's flying mark is on its way here. */}
+      <ByteMark className="intro-mark:invisible" />
       <span className="font-display text-[21px] leading-none font-bold tracking-[-0.025em]">OneByte</span>
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------
+   Network — an operator's name on its own brand colour.
+   ------------------------------------------------------------------ */
+
+export type NetworkName = "MTN" | "Glo";
+
+const networkTone: Record<NetworkName, string> = {
+  MTN: "bg-mtn text-ink",
+  Glo: "bg-glo text-white",
+};
+
+const networkSize = {
+  xs: "h-5 rounded-md px-[7px] text-[11px]",
+  sm: "h-6 rounded-full px-2.5 text-[12px]",
+  md: "h-8 rounded-full px-3.5 text-[14px]",
+};
+
+export function Network({ name, size = "xs", className }: { name: NetworkName; size?: keyof typeof networkSize; className?: string }) {
+  return (
+    <span className={cx("inline-flex items-center font-semibold tracking-[-0.01em]", networkTone[name], networkSize[size], className)}>
+      {name}
     </span>
   );
 }

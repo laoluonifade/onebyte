@@ -33,7 +33,7 @@ const samples: { id: string; label: string; file: string; lines: ReactNode[] }[]
         {"  "}msisdn: <S>"+2348050001234"</S>,
       </>,
       <>
-        {"  "}network: <S>"glo"</S>,
+        {"  "}network: <S>"mtn"</S>,
       </>,
       <>
         {"  "}limit: {"{"} amount: <N>2</N>, unit: <S>"GB"</S> {"}"},
@@ -94,7 +94,7 @@ const samples: { id: string; label: string; file: string; lines: ReactNode[] }[]
       </>,
       <>
         {"    "}
-        <P>"network"</P>: <S>"glo"</S>,
+        <P>"network"</P>: <S>"mtn"</S>,
       </>,
       <>
         {"    "}
@@ -234,7 +234,7 @@ const words = statement.split(" ");
 const roadmap = [
   {
     phase: "Now",
-    title: "Launch on Glo",
+    title: "Launch on MTN and Glo",
     body: "Teams and Rewards with the dashboard, wallet, limits and usage reporting.",
   },
   {
