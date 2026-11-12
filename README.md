@@ -20,17 +20,30 @@ OneByte enables businesses to provide internet access to employees and customers
 3. **OneByte Toll-Free** — Zero-rate your apps and websites
 4. **OneByte White Label** — Launch a branded internet service on OneByte rails
 
-## Prototype
+## Landing page
 
-Open [`index.html`](./index.html) in any modern browser for the full interactive demo:
+The marketing site is a React + TypeScript app built with Vite.
 
-- Marketing website
-- Business dashboard (stats, charts, activity)
-- User management (search, limits, suspend/reactivate)
-- Billing & spending controls (wallet, budgets, history)
-- Developer & white-label preview (API keys, live brand customization)
+```bash
+npm install
+npm run dev      # local dev server
+npm run build    # type-check and build to dist/
+```
 
-All interactions use local state and mock Nigerian company data. No backend required.
+### Structure
+
+- `src/styles/base.css` — design tokens (colour, type, radii, motion), reset, buttons and shared primitives
+- `src/components/primitives.tsx` — `ByteMark` logo, `Reveal` scroll animation, icon set
+- `src/components/` — one file per page section, each with its own stylesheet:
+  `Nav`, `Hero` + `Console` (live dashboard mock), `Problem` (the standup story + cost comparison), `HowItWorks`, `Products` (product cards + dashboard features), `Pricing` (estimator), `Developers` (API preview + vision), `Closing` (FAQ, waitlist panel, footer), `Waitlist` (shared email form)
+
+### Notes
+
+- All dashboard figures are illustrative mock data. They are internally consistent (spend = usage × rate).
+- There is no sign-in yet: every call to action joins the waitlist. The waitlist form (`Waitlist.tsx`) only confirms in the UI; it is not connected to a backend yet.
+- Pricing shown is indicative, and the developer API is presented as a preview.
+- Headlines are set in Bricolage Grotesque, body and UI in Geist. Geist has no naira sign, so `₦` alone is loaded from Inter (see the `@font-face` at the top of `base.css`).
+- The look is deliberately flat: pure white page, solid colour panels, no gradients.
 
 ## License
 

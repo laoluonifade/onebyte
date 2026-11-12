@@ -1,0 +1,39 @@
+.bytemark {
+  display: inline-grid;
+  grid-template-columns: repeat(var(--cols), var(--cell));
+  gap: var(--gap);
+  flex: none;
+  vertical-align: middle;
+}
+
+.bytemark i {
+  width: var(--cell);
+  height: var(--cell);
+  border-radius: calc(var(--cell) * 0.22);
+  background: currentColor;
+  transition: background-color 0.35s var(--ease), opacity 0.35s var(--ease);
+}
+
+.bytemark--dim i {
+  opacity: 0.16;
+}
+
+.bytemark i[data-on] {
+  background: var(--green);
+  opacity: 1;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+}
+
+.logo__word {
+  font-family: var(--font-display);
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}

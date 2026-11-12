@@ -1,0 +1,311 @@
+.hero {
+  padding-bottom: clamp(48px, 6vw, 88px);
+  text-align: center;
+}
+
+/* One full screen: headline, lede and form, sized to the viewport so it all reads at a glance.
+   The dashboard only appears once you scroll. */
+.hero__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-block: 128px 44px; /* nav is 68px, so the headline always sits well clear of it */
+}
+
+.hero .shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* never let the cropped screenshot widen the column */
+  justify-items: center;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+}
+
+/* ---------------- Headline ---------------- */
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, min(16.4vw, 15vh), 190px);
+  font-size: clamp(52px, min(16.4vw, 15svh), 190px);
+  line-height: 0.94;
+  font-weight: 700;
+  letter-spacing: -0.028em;
+}
+
+/* Each line rises into place, one after the other. */
+.hero__line {
+  display: block;
+  animation: line-in 0.9s var(--ease-out) both;
+  animation-delay: calc(0.05s + var(--i) * 0.11s);
+}
+
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+}
+
+/* The rotating word sits on a flat green block, tilted like a sticker. */
+.rotator {
+  position: relative;
+  display: inline-block;
+  margin-block: 0.06em;
+  padding: 0.02em 0.14em 0.1em;
+  border-radius: 0.14em;
+  background: var(--green);
+  transform: rotate(-2deg);
+  animation: sticker-in 0.8s var(--ease-out) 0.5s both;
+}
+
+@keyframes sticker-in {
+  from {
+    transform: rotate(-9deg) scale(0.7);
+  }
+}
+
+/* Off-screen measuring copies. Zero-size and clipped so they can never widen the page. */
+.rotator__sizer {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.rotator__sizer span {
+  display: inline-block;
+}
+
+.rotator__window {
+  position: relative;
+  display: block;
+  height: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 0.55s var(--ease-out);
+}
+
+.rotator__word {
+  display: block;
+  line-height: 1;
+}
+
+.rotator__word--in {
+  animation: word-in 0.6s var(--ease-out) both;
+}
+
+.rotator__word--out {
+  position: absolute;
+  inset: 0 auto auto 0;
+  animation: word-out 0.45s var(--ease) both;
+}
+
+@keyframes word-in {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes word-out {
+  to {
+    transform: translateY(-105%);
+    opacity: 0;
+  }
+}
+
+/* ---------------- Lede and action ---------------- */
+
+.hero__lede {
+  max-width: 30em;
+  margin-top: clamp(22px, 3.4vh, 40px);
+  font-size: clamp(18px, min(1.9vw, 3vh), 28px);
+  line-height: 1.4;
+  letter-spacing: -0.018em;
+  color: var(--ink-2);
+  text-wrap: balance;
+  animation: hero-in 1s var(--ease-out) 0.5s both;
+}
+
+.hero__nowrap {
+  white-space: nowrap;
+}
+
+.hero__action {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  margin-top: clamp(24px, 3.6vh, 44px);
+  animation: hero-in 1s var(--ease-out) 0.62s both;
+}
+
+@media (min-width: 761px) {
+  .hero__action .waitlist {
+    width: min(100%, 540px);
+    padding: 7px;
+  }
+
+  .hero__action .waitlist input {
+    height: 56px;
+    padding-left: 22px;
+    font-size: 18px;
+  }
+
+  .hero__action .waitlist .btn {
+    --h: 56px;
+    padding-inline: 28px;
+    font-size: 17.5px;
+  }
+}
+
+/* ---------------- Stage: one flat field of colour ---------------- */
+
+.hero__stage {
+  width: 100%;
+  margin-top: clamp(16px, 3vw, 40px);
+  animation: hero-in 1.2s var(--ease-out) 0.78s both;
+}
+
+.stage {
+  position: relative;
+  padding: clamp(12px, 4.4vw, 56px);
+  border-radius: var(--r-xl);
+  background: var(--green);
+  text-align: left;
+  transform: scale(var(--grow, 1));
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+.stage .console {
+  box-shadow: 0 1px 2px rgba(6, 60, 30, 0.12), 0 28px 60px -24px rgba(6, 60, 30, 0.5);
+}
+
+/* A notification, the way it lands on someone's phone. */
+.moment {
+  position: absolute;
+  left: 16px;
+  top: 348px;
+  z-index: 3;
+  width: 236px;
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  background: var(--white);
+  box-shadow: 0 0 0 1px rgba(18, 20, 17, 0.06), 0 22px 48px -18px rgba(6, 60, 30, 0.55);
+  font-size: 13.5px;
+  line-height: 1.35;
+  letter-spacing: -0.008em;
+  color: var(--ink-3);
+  animation: moment-in 0.9s var(--ease-out) 1.9s both;
+}
+
+@keyframes moment-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.92);
+  }
+}
+
+.moment__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12.5px;
+  font-weight: 520;
+  color: var(--ink-2);
+}
+
+.moment__top em {
+  margin-left: auto;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--ink-4);
+}
+
+.moment__icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--green);
+}
+
+.moment strong {
+  display: block;
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.moment p {
+  margin-top: 3px;
+}
+
+/* ---------------- Tablet ---------------- */
+
+@media (max-width: 980px) and (min-width: 761px) {
+  .moment {
+    display: none;
+  }
+}
+
+/* ----------------------------------------------------------------
+   Phone: the dashboard is shown as a screenshot, not re-flowed.
+   It keeps its desktop layout (760px wide, see SHOT_WIDTH in Hero.tsx)
+   and is scaled down to fit the panel, so the whole thing is visible.
+   The notification sits over its bottom edge.
+   ---------------------------------------------------------------- */
+
+@media (max-width: 760px) {
+  .hero__head {
+    padding-block: 104px 36px;
+  }
+
+  .hero__title {
+    line-height: 0.96;
+  }
+
+  .hero__lede {
+    font-size: 19px;
+  }
+
+  .stage {
+    padding: 14px 14px 16px;
+    border-radius: 26px;
+    transform: none;
+  }
+
+  .stage__shot {
+    width: 760px;
+    zoom: var(--shot-zoom, 0.42);
+  }
+
+  .moment {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: -14px 14px 0;
+    padding: 12px 14px 14px;
+    font-size: 13.5px;
+  }
+
+  .moment strong {
+    font-size: 17px;
+  }
+}
