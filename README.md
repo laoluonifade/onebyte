@@ -67,7 +67,7 @@ Everything is styled with Tailwind utility classes. There are no component style
 
 ## Deploying
 
-The landing page is hosted as static files on the Hetzner server, served by Caddy.
+The landing page is live at https://onebytehq.com, hosted as static files on the Hetzner server and served by Caddy (site block in `/etc/caddy/Caddyfile` on the server).
 
 ```bash
 npm run deploy     # builds, then uploads apps/landing/dist to hetzner:/var/www/onebyte
