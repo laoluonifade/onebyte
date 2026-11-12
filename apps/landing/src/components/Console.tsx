@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { gb, int, naira, nairaExact } from "../lib/format";
 import { useInView, useInterval, usePrefersReducedMotion } from "../lib/hooks";
 import { cx } from "../lib/ui";
@@ -79,6 +79,45 @@ export function Console() {
   const [today, setToday] = useState(TODAY_START);
   const [lastTick, setLastTick] = useState(0.42);
   const [hovered, setHovered] = useState<number | null>(null);
+  const [seen, setSeen] = useState(false);
+  const [progress, setProgress] = useState(0); // 0 → 1: KPI count-up
+  const [activated, setActivated] = useState(false); // Emeka's number goes live while you watch
+
+  // "Seen" latches the first time the dashboard is on screen and the logo intro has finished.
+  useEffect(() => {
+    if (seen || !inView) return;
+    const check = () => {
+      if (document.documentElement.hasAttribute("data-intro")) return false;
+      setSeen(true);
+      return true;
+    };
+    if (check()) return;
+    const id = window.setInterval(() => check() && window.clearInterval(id), 150);
+    return () => window.clearInterval(id);
+  }, [inView, seen]);
+
+  // Once seen: figures count up, then a pending number activates a few seconds later.
+  useEffect(() => {
+    if (!seen) return;
+    if (reduced) {
+      setProgress(1);
+      setActivated(true);
+      return;
+    }
+    let frame = 0;
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / 1400);
+      setProgress(1 - Math.pow(1 - t, 3));
+      if (t < 1) frame = requestAnimationFrame(step);
+    };
+    frame = requestAnimationFrame(step);
+    const timer = window.setTimeout(() => setActivated(true), 4200);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, [seen, reduced]);
 
   // A small trickle of usage so the wallet visibly drains per gigabyte.
   useInterval(
@@ -96,19 +135,20 @@ export function Console() {
   const wallet = FUNDED - spent;
   const days = [...HISTORY, today];
 
+  const active = activated ? 249 : 248;
   const kpis: { label: string; value: ReactNode; note: string }[] = [
-    { label: "Wallet balance", value: nairaExact(wallet), note: "Billed as data is used" },
-    { label: "Spent this month", value: naira(spent), note: `at ₦${RATE} per GB` },
+    { label: "Wallet balance", value: nairaExact(wallet * progress), note: "Billed as data is used" },
+    { label: "Spent this month", value: naira(spent * progress), note: `at ₦${RATE} per GB` },
     {
       label: "Data used",
       value: (
         <>
-          {gb(used)} <small className="text-[13px] font-medium tracking-[-0.01em] text-ink-3">GB</small>
+          {gb(used * progress)} <small className="text-[13px] font-medium tracking-[-0.01em] text-ink-3">GB</small>
         </>
       ),
       note: `${gb(today)} GB today`,
     },
-    { label: "Active people", value: "248", note: "of 260 added" },
+    { label: "Active people", value: Math.round(active * progress), note: "of 260 added" },
   ];
 
   return (
@@ -180,9 +220,25 @@ export function Console() {
         {/* KPI row: one bordered strip, hairline dividers */}
         <dl className="grid grid-cols-[1.25fr_1fr_1fr_0.85fr] rounded-xl inset-ring inset-ring-ink/7">
           {kpis.map((kpi, i) => (
-            <div key={kpi.label} className={cx("grid min-w-0 gap-1 px-4 py-3.5", i > 0 && "border-l", i > 0 && hairline)}>
+            <div
+              key={kpi.label}
+              className={cx(
+                "grid min-w-0 gap-1 px-4 py-3.5 transition-[opacity,translate] duration-500 ease-out",
+                i > 0 && "border-l",
+                i > 0 && hairline,
+                !seen && "translate-y-2 opacity-0",
+              )}
+              style={{ transitionDelay: `${i * 80}ms` }}
+            >
               <dt className="text-ink-3">{kpi.label}</dt>
-              <dd className="text-[22px] leading-[1.15] font-[560] tracking-[-0.035em] whitespace-nowrap tabular-nums">
+              <dd
+                className={cx(
+                  "text-[22px] leading-[1.15] font-[560] tracking-[-0.035em] whitespace-nowrap tabular-nums",
+                  // The count bumps when a newly activated person joins.
+                  kpi.label === "Active people" && activated && "animate-pop",
+                )}
+                key={kpi.label === "Active people" ? String(activated) : undefined}
+              >
                 {kpi.value}
               </dd>
               <span className="truncate text-[11.5px] text-ink-3 tabular-nums">{kpi.note}</span>
@@ -229,12 +285,13 @@ export function Console() {
                     >
                       <i
                         className={cx(
-                          "min-h-0.5 w-[min(60%,22px)] origin-bottom animate-bar-grow rounded-t",
+                          "min-h-0.5 w-[min(60%,22px)] origin-bottom rounded-t",
+                          seen ? "animate-bar-grow" : "[transform:scaleY(0)]",
                           "[transition:height_0.6s_var(--ease-out),background-color_0.15s_cubic-bezier(0.4,0,0.2,1)]",
                           isToday ? "bg-green-deep" : "bg-ink",
                           !isHovered && "group-hover/bars:opacity-32",
                         )}
-                        style={{ height: `${(value / AXIS_MAX) * 100}%`, animationDelay: `${1.3 + i * 0.045}s` }}
+                        style={{ height: `${(value / AXIS_MAX) * 100}%`, animationDelay: `${0.35 + i * 0.05}s` }}
                       />
                       <span
                         className={cx(
@@ -272,7 +329,7 @@ export function Console() {
               <strong className="text-[15px] font-[560] tracking-[-0.025em] text-ink">{naira(spent)}</strong> of{" "}
               {naira(BUDGET)}
             </p>
-            <ByteMeter ratio={spent / BUDGET} />
+            <ByteMeter ratio={seen ? spent / BUDGET : 0} />
             <ul className="mt-3.5 grid">
               {[
                 ["Low-balance alert", "below ₦250,000"],
@@ -304,10 +361,25 @@ export function Console() {
               <span role="columnheader">Usage this month</span>
               <span role="columnheader">Status</span>
             </div>
-            {people.map((person) => {
-              const ratio = person.used === null ? 0 : person.used / person.limit;
+            {people.map((original, i) => {
+              // Emeka starts as "Activating" and comes online a few seconds after the dashboard is seen.
+              const person: Person =
+                activated && original.status === "pending" ? { ...original, status: "active", used: 0.4 } : original;
+              const justActivated = activated && original.status === "pending";
+              const ratio = !seen || person.used === null ? 0 : person.used / person.limit;
               return (
-                <div className={cx(row, "h-11 border-t", hairline)} role="row" key={person.name}>
+                <div
+                  className={cx(
+                    row,
+                    "h-11 border-t transition-[opacity,translate] duration-500 ease-out",
+                    hairline,
+                    !seen && "-translate-x-3 opacity-0",
+                    justActivated && "animate-row-flash",
+                  )}
+                  style={{ transitionDelay: `${300 + i * 70}ms` }}
+                  role="row"
+                  key={person.name}
+                >
                   <span role="cell" className="flex items-center gap-2.5">
                     <Avatar name={person.name} className="size-[26px]" />
                     <span className="grid min-w-0">
@@ -329,7 +401,7 @@ export function Console() {
                   </span>
                   <span role="cell">
                     <span className={cx("inline-flex items-center gap-1.5 font-medium", person.status === "pending" && "text-ink-3")}>
-                      <i className={cx("size-1.5", statusDot[person.status])} />
+                      <i className={cx("size-1.5", statusDot[person.status], justActivated && "animate-pop")} />
                       {statusLabel[person.status]}
                     </span>
                   </span>

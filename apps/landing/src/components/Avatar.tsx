@@ -29,6 +29,7 @@ const base: Options = {
 
 /* The illustrative characters get a fixed look; anyone else is seeded from their name. */
 const looks: Record<string, Options> = {
+  "Ayomide Aluko": { top: ["fro"], hairColor: ["2c1b18"] },
   "Adaeze Okafor": { top: ["bigHair"] },
   "Tunde Bakare": { top: ["shortFlat"], facialHairProbability: 100, facialHair: ["beardLight"] },
   "Ifeoma Nwosu": { top: ["bun"], accessoriesProbability: 100, accessories: ["round"] },
