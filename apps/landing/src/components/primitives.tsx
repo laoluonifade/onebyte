@@ -72,7 +72,10 @@ export function ByteMeter({
 }
 
 /* ------------------------------------------------------------------
-   Reveal — fades content up the first time it scrolls into view.
+   Reveal — rises into place as it scrolls into view, tied to the
+   scrollbar (see `scroll-in` in styles/index.css). Browsers without
+   scroll timelines fall back to a one-off fade the first time the
+   element is seen. `delay` staggers siblings either way.
    ------------------------------------------------------------------ */
 
 type RevealProps = {
@@ -90,11 +93,12 @@ export function Reveal({ children, as: Tag = "div", delay = 0, className, style,
     <Tag
       ref={ref}
       className={cx(
-        "transition-[opacity,translate] duration-[900ms] ease-out motion-reduce:translate-none motion-reduce:opacity-100 motion-reduce:transition-none",
-        inView ? "opacity-100" : "translate-y-5 opacity-0",
+        "scroll-in transition-[opacity,translate] duration-[900ms] ease-out motion-reduce:translate-none motion-reduce:opacity-100 motion-reduce:transition-none",
+        // Fallback only: written out in full so Tailwind can see the class names.
+        !inView && "not-supports-[animation-timeline:view()]:translate-y-5 not-supports-[animation-timeline:view()]:opacity-0",
         className,
       )}
-      style={{ ...style, transitionDelay: `${delay}ms` }}
+      style={{ ...style, transitionDelay: `${delay}ms`, "--stagger": Math.min(delay / 10, 24) } as CSSProperties}
       {...rest}
     >
       {children}

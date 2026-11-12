@@ -88,8 +88,8 @@ export function Nav() {
         </nav>
 
         <div className="flex items-center gap-1.5 justify-self-end">
-          {/* On the narrowest phones the bar keeps just the logo and menu; the sheet carries this button. */}
-          <a href="#waitlist" className={cx(btn(dark ? "paper" : "ink", "sm"), "max-[380px]:hidden")}>
+          {/* Hidden whenever the menu button shows; the menu sheet carries its own waitlist button. */}
+          <a href="#waitlist" className={cx(btn(dark ? "paper" : "ink", "sm"), "max-[900px]:hidden")}>
             Join the waitlist
           </a>
           <button

@@ -191,6 +191,50 @@
   }
 }
 
+/* ------------------------------------------------------------------
+   Scroll-linked motion. These play with the scrollbar rather than on a
+   timer: scroll back up and they run in reverse. Browsers without
+   scroll timelines (and anyone who prefers reduced motion) get the
+   one-off fade in <Reveal> instead, or nothing at all.
+   ------------------------------------------------------------------ */
+
+@keyframes scroll-in {
+  from {
+    opacity: 0;
+    transform: translateY(56px) scale(0.96);
+  }
+}
+
+@keyframes scroll-away {
+  to {
+    opacity: 0.1;
+    transform: translateY(-80px) scale(0.94);
+  }
+}
+
+/* Rises into place as it enters the viewport. `--stagger` (0–30) starts it a little later,
+   so siblings in a grid arrive one after another. */
+@utility scroll-in {
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      animation: scroll-in linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--stagger, 0) * 1%) cover calc(28% + var(--stagger, 0) * 1%);
+    }
+  }
+}
+
+/* Drifts up and fades as the page scrolls past the first screen. */
+@utility scroll-away {
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      animation: scroll-away linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 85vh;
+    }
+  }
+}
+
 /* `night:` styles anything inside a dark section (an element with the `night` class). */
 @custom-variant night (&:where(.night, .night *));
 

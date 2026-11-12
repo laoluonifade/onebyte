@@ -129,7 +129,7 @@ export function Hero() {
         {/* One full screen: headline, lede and form, sized to the viewport so it reads at a glance.
             The dashboard only appears once you scroll. The nav is 68px, so the top padding keeps the
             headline well clear of it. */}
-        <div className="flex min-h-svh w-full flex-col items-center justify-center pt-32 pb-11 max-[760px]:pt-[104px] max-[760px]:pb-9">
+        <div className="scroll-away flex min-h-svh w-full origin-top flex-col items-center justify-center pt-32 pb-11 max-[760px]:pt-[104px] max-[760px]:pb-9">
           <h1
             className="font-display text-[clamp(52px,min(16.4vw,15svh),190px)] leading-[0.94] font-bold tracking-[-0.028em] max-[760px]:leading-[0.96]"
             aria-label="Keep your people online."
@@ -169,20 +169,20 @@ export function Hero() {
 
             {/* The other side of the dashboard: a notification, the way it lands on someone's phone. */}
             <div
-              className="absolute top-[348px] left-4 z-3 w-[236px] animate-moment-in rounded-[18px] bg-white px-4 pt-3.5 pb-4 text-[13.5px] leading-[1.35] tracking-[-0.008em] text-ink-3 shadow-[0_0_0_1px_rgb(18_20_17/0.06),0_22px_48px_-18px_rgb(6_60_30/0.55)] max-[760px]:relative max-[760px]:inset-auto max-[760px]:mx-3.5 max-[760px]:mt-[-14px] max-[760px]:w-auto max-[760px]:px-3.5 max-[760px]:pt-3 max-[760px]:pb-3.5 min-[761px]:max-[980px]:hidden"
+              className="absolute top-[348px] left-4 z-3 w-[236px] animate-moment-in rounded-[18px] bg-white px-4 pt-3.5 pb-4 text-[13.5px] leading-[1.35] tracking-[-0.008em] text-ink-3 shadow-[0_0_0_1px_rgb(18_20_17/0.06),0_22px_48px_-18px_rgb(6_60_30/0.55)] max-[760px]:relative max-[760px]:inset-auto max-[760px]:mx-auto max-[760px]:mt-[-18px] max-[760px]:w-[min(100%-32px,272px)] max-[760px]:rounded-[14px] max-[760px]:px-3 max-[760px]:pt-2.5 max-[760px]:pb-3 max-[760px]:text-[12px] min-[761px]:max-[980px]:hidden"
               aria-hidden="true"
             >
-              <div className="mb-2.5 flex items-center gap-2 text-[12.5px] font-[520] text-ink-2">
-                <span className="grid size-[22px] place-items-center rounded-md bg-ink text-green">
-                  <Icon name="signal" size={14} />
+              <div className="mb-2.5 flex items-center gap-2 text-[12.5px] font-[520] text-ink-2 max-[760px]:mb-1.5 max-[760px]:gap-1.5 max-[760px]:text-[11px]">
+                <span className="grid size-[22px] place-items-center rounded-md bg-ink text-green max-[760px]:size-[18px] max-[760px]:rounded-[5px]">
+                  <Icon name="signal" size={12} />
                 </span>
                 <span>Glo</span>
                 <em className="ml-auto font-normal text-ink-4 not-italic">now</em>
               </div>
-              <strong className="block text-[17px] leading-[1.2] font-semibold tracking-[-0.03em] text-ink">
+              <strong className="block text-[17px] leading-[1.2] font-semibold tracking-[-0.03em] text-ink max-[760px]:text-[14.5px]">
                 You're online, Adaeze.
               </strong>
-              <p className="mt-[3px]">This month's internet is on Meridian Labs.</p>
+              <p className="mt-[3px] max-[760px]:mt-0.5">This month's internet is on Meridian Labs.</p>
             </div>
           </div>
         </div>

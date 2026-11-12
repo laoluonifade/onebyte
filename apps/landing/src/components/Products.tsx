@@ -67,8 +67,14 @@ const team = [
 
 function TeamsArt() {
   return (
-    <div className={cx(art, "items-end justify-end pl-[clamp(24px,3vw,40px)] max-[640px]:pb-[76px]")} aria-hidden="true">
-      <div className="w-[min(100%,500px)] rounded-tl-[18px] bg-white px-5 pt-4.5 pb-1.5 shadow-[0_0_0_1px_var(--color-line),0_24px_56px_-20px_rgb(11_12_11/0.24)] max-[640px]:rounded-l-[18px] max-[640px]:px-3.5">
+    <div
+      className={cx(
+        art,
+        "items-end justify-end pl-[clamp(24px,3vw,40px)] max-[640px]:flex-col max-[640px]:items-stretch max-[640px]:gap-3.5 max-[640px]:px-6 max-[640px]:pb-6",
+      )}
+      aria-hidden="true"
+    >
+      <div className="w-[min(100%,500px)] rounded-tl-[18px] bg-white px-5 pt-4.5 pb-1.5 shadow-[0_0_0_1px_var(--color-line),0_24px_56px_-20px_rgb(11_12_11/0.24)] max-[640px]:w-full max-[640px]:rounded-[18px] max-[640px]:px-4">
         <header className="mb-2 flex items-baseline justify-between">
           <strong className="text-[15px] font-[560] tracking-[-0.025em]">Engineering</strong>
           <span className="text-[12px] text-ink-3 tabular-nums">4 of 38 people</span>
@@ -95,7 +101,7 @@ function TeamsArt() {
           ))}
         </ul>
       </div>
-      <div className="absolute bottom-7 left-[clamp(24px,3vw,40px)] inline-flex h-9 items-center gap-2 rounded-full bg-ink pr-4 pl-3.5 font-[520] text-white shadow-[0_12px_28px_-10px_rgb(11_12_11/0.5)]">
+      <div className="absolute bottom-7 left-[clamp(24px,3vw,40px)] inline-flex h-9 max-[640px]:static max-[640px]:self-start items-center gap-2 rounded-full bg-ink pr-4 pl-3.5 font-[520] text-white shadow-[0_12px_28px_-10px_rgb(11_12_11/0.5)]">
         <Icon name="users" size={15} className="text-green" />
         One pool. One bill.
       </div>
