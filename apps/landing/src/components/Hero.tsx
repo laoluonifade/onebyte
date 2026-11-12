@@ -146,7 +146,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-[clamp(22px,3.4vh,40px)] max-w-[30em] animate-hero-lede text-[clamp(18px,min(1.9vw,3vh),28px)] leading-[1.4] tracking-[-0.018em] text-balance text-ink-2 max-[760px]:text-[19px]">
-            OneByte covers mobile data for the people your business depends on, from one shared pool. Nobody runs out{" "}
+            OneByte covers mobile data for the people your business depends on. Nobody runs out{" "}
             <span className="whitespace-nowrap">mid-call</span>, and you only pay for what actually gets used.
           </p>
 
