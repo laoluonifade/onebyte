@@ -140,7 +140,7 @@ function RewardsArt() {
           </p>
         </div>
       </div>
-      <div className="mt-1.5 grid grid-cols-[1.4fr_1fr_1fr] gap-3 rounded-[14px] px-4 py-3.5 inset-ring inset-ring-night-line [&>div]:grid [&>div]:gap-0.5 [&_span]:text-[11.5px] [&_span]:text-on-night-3 [&_strong]:font-[540] [&_strong]:whitespace-nowrap">
+      <div className="mt-1.5 grid grid-cols-[1.4fr_1fr_1fr] gap-3 rounded-[14px] px-4 py-3.5 max-[640px]:grid-cols-[auto_auto_auto] max-[640px]:justify-between max-[640px]:gap-2 max-[640px]:px-3.5 [&_span]:whitespace-nowrap inset-ring inset-ring-night-line [&>div]:grid [&>div]:gap-0.5 [&_span]:text-[11.5px] [&_span]:text-on-night-3 [&_strong]:font-[540] [&_strong]:whitespace-nowrap">
         <div>
           <span>Campaign</span>
           <strong>Sign-up reward</strong>

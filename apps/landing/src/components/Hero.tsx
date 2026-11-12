@@ -151,7 +151,7 @@ export function Hero() {
           </p>
 
           <div className="mt-[clamp(24px,3.6vh,44px)] grid w-full animate-hero-form justify-items-center">
-            <WaitlistForm id="hero-email" size="lg" />
+            <WaitlistForm id="hero-email" source="hero" size="lg" />
           </div>
         </div>
 

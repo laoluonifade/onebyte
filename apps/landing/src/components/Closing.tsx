@@ -109,7 +109,7 @@ export function Cta() {
             Join the waitlist. We're bringing Nigerian businesses on in small batches, and we'd love yours to be one of
             the first.
           </p>
-          <WaitlistForm id="cta-email" tone="green" />
+          <WaitlistForm id="cta-email" source="closing" tone="green" />
         </Reveal>
       </div>
     </section>

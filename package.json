@@ -10,6 +10,7 @@
     "dev": "npm run dev --workspace @onebyte/landing",
     "build": "npm run build --workspace @onebyte/landing",
     "preview": "npm run preview --workspace @onebyte/landing",
-    "deploy": "bash scripts/deploy-landing.sh"
+    "deploy": "bash scripts/deploy-landing.sh",
+    "og": "bash scripts/og.sh"
   }
 }

@@ -75,6 +75,14 @@ function Slider(props: {
 
 export function Pricing() {
   const [tierId, setTierId] = useState<TierId>("growing");
+
+  // When the estimator sits below the tiers (stacked layout), take people straight to it.
+  const chooseTier = (id: TierId) => {
+    setTierId(id);
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      document.getElementById("estimate")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
   const [people, setPeople] = useState(50);
   const [perPerson, setPerPerson] = useState(8);
 
@@ -116,7 +124,7 @@ export function Pricing() {
                   role="radio"
                   aria-checked={checked}
                   className="group grid grid-cols-[20px_minmax(0,1fr)_auto] items-center gap-4 border-b border-line-2 py-5 text-left max-[420px]:gap-3"
-                  onClick={() => setTierId(item.id)}
+                  onClick={() => chooseTier(item.id)}
                 >
                   {/* Radio: fills with ink and lights the green bit when chosen. */}
                   <span
@@ -154,6 +162,7 @@ export function Pricing() {
         </div>
 
         <Reveal
+          id="estimate"
           className="sticky top-24 grid gap-[26px] rounded-4xl bg-white p-[clamp(24px,3vw,36px)] shadow-[0_0_0_1px_var(--color-line),var(--shadow-lg)] max-[900px]:static max-[900px]:rounded-[22px]"
           delay={140}
         >

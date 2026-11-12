@@ -1,0 +1,135 @@
+<!doctype html>
+<!--
+  Source for public/og.png, the 1200×630 link preview (Twitter/X, WhatsApp, Slack, LinkedIn…).
+  To regenerate after editing, from the repo root:  npm run og
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @font-face {
+        font-family: "Bricolage";
+        src: url("../../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2")
+          format("woff2-variations");
+        font-weight: 200 800;
+      }
+      @font-face {
+        font-family: "Geist";
+        src: url("../../../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2")
+          format("woff2-variations");
+        font-weight: 100 900;
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 64px 72px;
+        background: #ffffff;
+        color: #0a0b0a;
+        font-family: "Geist", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-family: "Bricolage", sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+      .mark {
+        display: grid;
+        grid-template-columns: repeat(4, 11px);
+        gap: 4.4px;
+      }
+      .mark i {
+        width: 11px;
+        height: 11px;
+        border-radius: 2.4px;
+        background: #0a0b0a;
+      }
+      .mark i:last-child {
+        background: #17db70;
+      }
+      .networks {
+        display: flex;
+        gap: 10px;
+      }
+      .networks span {
+        display: inline-flex;
+        align-items: center;
+        height: 44px;
+        padding: 0 20px;
+        border-radius: 999px;
+        font-size: 21px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .mtn {
+        background: #ffcc00;
+      }
+      .glo {
+        background: #50b848;
+        color: #fff;
+      }
+      h1 {
+        font-family: "Bricolage", sans-serif;
+        font-size: 116px;
+        line-height: 0.95;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+      }
+      .sticker {
+        display: inline-block;
+        margin: 6px 0;
+        padding: 0 18px 12px;
+        border-radius: 18px;
+        background: #17db70;
+        transform: rotate(-2deg);
+      }
+      .bottom {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        font-size: 26px;
+        letter-spacing: -0.012em;
+        color: #626663;
+      }
+      .bottom strong {
+        color: #0a0b0a;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <div class="logo">
+        <span class="mark"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        OneByte
+      </div>
+    </div>
+
+    <h1>Keep your <span class="sticker">people</span><br />online.</h1>
+
+    <div class="bottom">
+      <span>Mobile data for your team and customers, from one shared pool.<br />Free setup. Pay only for what's used.</span>
+      <strong>onebytehq.com</strong>
+    </div>
+  </body>
+</html>
