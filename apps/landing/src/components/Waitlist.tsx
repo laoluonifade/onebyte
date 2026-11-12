@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { joinWaitlist, type JoinResult } from "../lib/waitlist";
+import { JoinFailed, joinWaitlist, savedJoin, type JoinError, type JoinResult } from "../lib/waitlist";
 import { btn, btnArrow, cx } from "../lib/ui";
 import { Joined } from "./Joined";
 import { Icon } from "./primitives";
@@ -14,12 +14,21 @@ type Props = {
   size?: "md" | "lg";
 };
 
+const errorMessages: Record<JoinError, string> = {
+  invalid_email: "That email doesn't look right. Check it and try again.",
+  device_limit: "This device has already joined with another email. One spot per person.",
+  rate_limited: "Lots of sign-ups right now. Give it a few minutes and try again.",
+  failed: "That didn't go through. Check your connection and try again.",
+};
+
 /** Email capture for the waitlist. Sign-ups are saved to a Google Sheet (see lib/waitlist.ts). */
 export function WaitlistForm({ id, source, tone = "paper", size = "md" }: Props) {
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState(""); // honeypot
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
-  const [result, setResult] = useState<JoinResult | null>(null);
+  const [error, setError] = useState<JoinError>("failed");
+  // A browser that already joined sees its confirmation, not a fresh form, after a refresh.
+  const [result, setResult] = useState<JoinResult | null>(() => savedJoin());
   const [celebrate, setCelebrate] = useState<{ x: number; y: number } | null>(null);
   const lg = size === "lg";
 
@@ -38,7 +47,8 @@ export function WaitlistForm({ id, source, tone = "paper", size = "md" }: Props)
       setResult(joined);
       setCelebrate(origin);
       setStatus("idle");
-    } catch {
+    } catch (failure) {
+      setError(failure instanceof JoinFailed ? failure.code : "failed");
       setStatus("error");
     }
   };
@@ -49,9 +59,9 @@ export function WaitlistForm({ id, source, tone = "paper", size = "md" }: Props)
     return (
       <>
         {celebrate && (
-          <Joined email={email} result={result} origin={celebrate} onClose={() => setCelebrate(null)} />
+          <Joined email={result.email} result={result} origin={celebrate} onClose={() => setCelebrate(null)} />
         )}
-        <JoinedCard email={email} result={result} className={frame} />
+        <JoinedCard email={result.email} result={result} className={frame} />
       </>
     );
   }
@@ -108,7 +118,7 @@ export function WaitlistForm({ id, source, tone = "paper", size = "md" }: Props)
       </form>
       {status === "error" && (
         <p className="text-[14px] text-ink-2" role="alert">
-          That didn't go through. Check the email and try again.
+          {errorMessages[error]}
         </p>
       )}
     </div>
